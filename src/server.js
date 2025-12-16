@@ -76,8 +76,6 @@ connectWithMongoDB(process.env.MONGO_URL)
     console.log("Faild to connect with MongoDB".red.inverse, err)
   );
 
-const server = app;
-
 if (process.env.NODE_ENV === "development") {
   try {
     const serverSll = https.createServer(
