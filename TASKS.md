@@ -61,6 +61,8 @@
 
 
 ### 🚧 In Progress
+- [] Manage accounts.
+- [] deploy on Vercel.
 
 
 ### 📋 Upcoming Tasks
