@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Manage Bootcamps</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg mb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex-shrink-0 flex items-center">
+            <a href="/" class="text-xl font-bold text-indigo-600"
+              >Dev<span class="text-gray-800">Camper</span></a
+            >
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="text-gray-700 font-bold"
+              >Welcome, <%= name %> - <%= role %></span
+            >
+            <a
+              href="/api/v1/logout"
+              class="text-red-600 hover:text-red-800 font-medium"
+              ><i class="fas fa-sign-out-alt"></i> Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Manage Bootcamps</h1>
+        <a
+          href="/api/v1/bootcamps/add"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200"
+        >
+          <i class="fas fa-plus mr-2"></i> Add Bootcamp
+        </a>
+      </div>
+
+      <!-- Bootcamps Table -->
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Bootcamp
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Rating
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Location
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (bootcamps.length === 0) { %>
+              <tr>
+                <td colspan="4" class="text-center py-5">No bootcamps found</td>
+              </tr>
+              <% } else { %> <% bootcamps.forEach((bootcamp) => { %>
+              <tr id="<%=bootcamp._id%>" class="bootcamp">
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 w-10 h-10">
+                      <% let photoURL = bootcamp.photo; if
+                      (!photoURL.startsWith("http") ||
+                      !photoURL.startsWith("https")) { photoURL = "/uploads/" +
+                      photoURL; } %>
+                      <img
+                        class="w-full h-full rounded-full object-cover"
+                        src="<%= photoURL %>"
+                        alt=""
+                      />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-gray-900 whitespace-no-wrap font-semibold">
+                        <%= bootcamp.name %>
+                      </p>
+                      <p class="text-gray-600 text-xs">
+                        <%= bootcamp.careers[0] %>
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <span
+                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                  >
+                    <span
+                      aria-hidden
+                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                    ></span>
+                    <span class="relative"
+                      ><%= bootcamp.averageRating ? bootcamp.averageRating : 0
+                      %></span
+                    >
+                  </span>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    <%= bootcamp.location.city %>
+                  </p>
+                </td>
+                <td
+                  class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right"
+                >
+                  <div class="flex justify-end space-x-2">
+                    <button
+                      id="<%= bootcamp._id %>"
+                      class="editBtn text-indigo-600 hover:text-indigo-900 bg-indigo-100 hover:bg-indigo-200 px-3 py-1 rounded text-xs font-medium transition duration-150"
+                    >
+                      <i class="fas fa-pencil-alt mr-1"></i> Edit
+                    </button>
+                    <button
+                      class="courseBtn text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 px-3 py-1 rounded text-xs font-medium transition duration-150"
+                    >
+                      <i class="fas fa-book mr-1"></i> Courses
+                    </button>
+                    <button
+                      class="removeBtn text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-3 py-1 rounded text-xs font-medium transition duration-150"
+                    >
+                      <i class="fas fa-trash mr-1"></i> Remove
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Edit Section (Hidden) -->
+              <tr id="<%= bootcamp._id %>" class="hidden bg-gray-50 edit">
+                <td colspan="4" class="px-5 py-5 border-b border-gray-200">
+                  <div
+                    class="p-4 bg-white rounded shadow-inner border border-gray-200"
+                  >
+                    <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">
+                      Edit Bootcamp Details
+                    </h4>
+                    <form id="<%= bootcamp._id %>" class="bootcamp-form">
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Name</label
+                          >
+                          <input
+                            name="name"
+                            type="text"
+                            value="<%= bootcamp.name %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Description</label
+                          >
+                          <input
+                            name="description"
+                            type="text"
+                            value="<%= bootcamp.description %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Website</label
+                          >
+                          <input
+                            name="website"
+                            type="text"
+                            value="<%= bootcamp.website %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Phone</label
+                          >
+                          <input
+                            name="phone"
+                            type="text"
+                            value="<%= bootcamp.phone %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Email</label
+                          >
+                          <input
+                            name="email"
+                            type="text"
+                            value="<%= bootcamp.email %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Address</label
+                          >
+                          <input
+                            name="address"
+                            type="text"
+                            value="<%= bootcamp.address %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Location</label
+                          >
+                          <input
+                            name="location"
+                            type="text"
+                            value="<%= bootcamp.location.formattedAddress %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Street</label
+                          >
+                          <input
+                            name="street"
+                            type="text"
+                            value="<%= bootcamp.location.street %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >City</label
+                          >
+                          <input
+                            name="city"
+                            type="text"
+                            value="<%= bootcamp.location.city %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >State</label
+                          >
+                          <input
+                            name="state"
+                            type="text"
+                            value="<%= bootcamp.location.state %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Zip Code</label
+                          >
+                          <input
+                            name="zipCode"
+                            type="text"
+                            value="<%= bootcamp.location.zipCode %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Country</label
+                          >
+                          <input
+                            name="country"
+                            type="text"
+                            value="<%= bootcamp.location.country %>"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <!-- Add more fields as needed -->
+                      </div>
+                      <div class="text-right">
+                        <button
+                          type="button"
+                          class="bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2 hover:bg-gray-400 cancelBtn"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          class="submit-changes bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+                        >
+                          Save Changes
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Courses Section (Hidden) -->
+              <tr id="<%= bootcamp._id %>" class="hidden bg-gray-50 courses">
+                <td colspan="4" class="px-5 py-5 border-b border-gray-200">
+                  <div
+                    class="p-4 bg-white rounded shadow-inner border border-gray-200"
+                  >
+                    <div
+                      class="flex justify-between items-center mb-4 border-b pb-2"
+                    >
+                      <h4 class="font-bold text-gray-800">Manage Courses</h4>
+                      <button
+                        id="<%= bootcamp._id %>"
+                        class="display-course-form text-sm bg-green-600 text-white px-3 py-1.5 rounded hover:bg-green-700 flex items-center shadow-sm"
+                      >
+                        <i class="fas fa-plus mr-1"></i> Add Course
+                      </button>
+                    </div>
+                    <!-- Course List (Placeholder) -->
+                    <ul class="divide-y divide-gray-100">
+                      <% bootcamp.courses.forEach((course) => { %>
+                      <li
+                        class="py-3 flex justify-between items-center hover:bg-gray-50 px-2 rounded transition"
+                      >
+                        <div>
+                          <p class="text-sm font-bold text-gray-800">
+                            <%= course.title %>
+                          </p>
+                          <p class="text-xs text-gray-500">
+                            <%= course.weeks %> Weeks • <%= course.minimumSkill
+                            %> • <%= course.tuition %>
+                          </p>
+                        </div>
+                        <div class="flex space-x-2">
+                          <button
+                            class="course-edit-btn text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-1.5 rounded hover:bg-indigo-100 transition"
+                            id="<%= course._id %>"
+                          >
+                            <i class="fas fa-pencil-alt"></i>
+                          </button>
+                          <button
+                            class="course-delete-btn text-red-600 hover:text-red-900 bg-red-50 p-1.5 rounded hover:bg-red-100 transition"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </li>
+                      <form
+                        id="<%= course._id %>"
+                        class="course-form hidden mb-2"
+                      >
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          <div>
+                            <label
+                              class="block text-sm font-medium text-gray-700 mb-1"
+                              >Title</label
+                            >
+                            <input
+                              name="title"
+                              type="text"
+                              value="<%= course.title %>"
+                              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              class="block text-sm font-medium text-gray-700 mb-1"
+                              >Description</label
+                            >
+                            <input
+                              name="description"
+                              type="text"
+                              value="<%= course.description %>"
+                              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              class="block text-sm font-medium text-gray-700 mb-1"
+                              >Weeks</label
+                            >
+                            <input
+                              name="weeks"
+                              type="number"
+                              value="<%= course.weeks %>"
+                              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              class="block text-sm font-medium text-gray-700 mb-1"
+                              >Tuition</label
+                            >
+                            <input
+                              name="tuition"
+                              type="number"
+                              value="<%= course.tuition %>"
+                              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              class="block text-sm font-medium text-gray-700 mb-1"
+                              >Minimum Skill</label
+                            >
+                            <input
+                              name="minimumSkill"
+                              type="text"
+                              value="<%= course.minimumSkill %>"
+                              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              class="block text-sm font-medium text-gray-700 mb-1"
+                              >ScholarshipAvailability</label
+                            >
+                            <input
+                              name="scholarhipsAvailable"
+                              type="text"
+                              value="<%= course.scholarhipsAvailable %>"
+                              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                            />
+                          </div>
+                          <!-- Add more fields as needed -->
+                        </div>
+                        <div class="text-right">
+                          <button
+                            type="button"
+                            class="cancel-changes bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2 hover:bg-gray-400 cancelBtn"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            class="submit-changes-course bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+                          >
+                            Save Changes
+                          </button>
+                        </div>
+                      </form>
+                      <% }) %>
+                    </ul>
+                    <form
+                      id="<%= bootcamp._id %>"
+                      class="course-form-add hidden mb-2"
+                    >
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Title</label
+                          >
+                          <input
+                            name="title"
+                            type="text"
+                            value=""
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Description</label
+                          >
+                          <input
+                            name="description"
+                            type="text"
+                            value=""
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Weeks</label
+                          >
+                          <input
+                            name="weeks"
+                            type="number"
+                            value=""
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Tuition</label
+                          >
+                          <input
+                            name="tuition"
+                            type="number"
+                            value=""
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Minimum Skill</label
+                          >
+                          <input
+                            name="minimumSkill"
+                            type="text"
+                            value=""
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >ScholarshipAvailability</label
+                          >
+                          <input
+                            name="scholarhipsAvailable"
+                            type="text"
+                            value=""
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+                          />
+                        </div>
+                        <!-- Add more fields as needed -->
+                      </div>
+                      <div class="text-right">
+                        <button
+                          type="button"
+                          class="cancel-changes bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2 hover:bg-gray-400 cancelBtn"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          class="add-course-btn bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+                        >
+                          Add Course
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <% }) %> <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <p>&copy; 2025 DevCamper. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="/main.js" type="module"></script>
+  </body>
+</html>

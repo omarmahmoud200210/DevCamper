@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Manage Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen"
+  >
+    <!-- Navigation (Simplified or consistant with others) -->
+    <nav class="bg-white shadow-lg mb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex-shrink-0 flex items-center">
+            <a href="/" class="text-xl font-bold text-indigo-600"
+              >Dev<span class="text-gray-800">Camper</span></a
+            >
+          </div>
+          <div class="flex items-center space-x-4">
+            <a href="/" class="text-gray-600 hover:text-gray-900 font-medium"
+              >Home</a
+            >
+            <a
+              href="/api/v1/bootcamps"
+              class="text-gray-600 hover:text-gray-900 font-medium"
+              >Bootcamps</a
+            >
+            <a
+              href="/api/v1/logout"
+              class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+            >
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Manage Account</h1>
+      <p class="text-gray-600 mb-8">
+        Update your profile settings and security.
+      </p>
+
+      <!-- Stats for Publishers/Admins -->
+      <% if (user.role === 'publisher') { %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div
+          class="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-500 flex items-center"
+        >
+          <div class="rounded-full bg-indigo-100 p-3 mr-4">
+            <i class="fas fa-chalkboard-teacher text-indigo-600 text-xl"></i>
+          </div>
+          <div>
+            <p
+              class="text-gray-500 text-sm font-medium uppercase tracking-wide"
+            >
+              Published Bootcamps
+            </p>
+            <h2 class="text-2xl font-bold text-gray-800">
+              <%= bootcampsCount ? bootcampCount : 0 %>
+            </h2>
+          </div>
+        </div>
+        <!-- You could add more stats here like "Total Reviews" etc -->
+      </div>
+      <% } %>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Sidebar / User Info Card -->
+        <div class="md:col-span-1">
+          <div class="bg-white shadow rounded-lg p-6 text-center">
+            <div
+              class="w-24 h-24 rounded-full bg-indigo-100 mx-auto flex items-center justify-center mb-4 text-indigo-500 text-4xl font-bold"
+            >
+              <%= user.username.charAt(0).toUpperCase() %>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800">
+              <%= user.username %>
+            </h3>
+            <p class="text-gray-500 text-sm mb-4"><%= user.email %></p>
+            <span
+              class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200 uppercase"
+            >
+              <%= user.role %>
+            </span>
+          </div>
+        </div>
+
+        <!-- Main Content Forms -->
+        <div class="md:col-span-2 space-y-8">
+          <!-- Update Details Form -->
+          <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h3 class="text-lg font-medium text-gray-900">
+                Profile Information
+              </h3>
+              <p class="text-sm text-gray-500">
+                Update your account's profile information and email address.
+              </p>
+            </div>
+            <div class="p-6">
+              <form id="update-details-form" class="space-y-6">
+                <div>
+                  <label
+                    for="username"
+                    class="block text-sm font-medium text-gray-700"
+                    >Username</label
+                  >
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    value="<%= user.username %>"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="email"
+                    class="block text-sm font-medium text-gray-700"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value="<%= user.email %>"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition shadow-sm text-sm font-medium"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Update Password Form -->
+          <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h3 class="text-lg font-medium text-gray-900">Update Password</h3>
+              <p class="text-sm text-gray-500">
+                Ensure your account is using a long, random password to stay
+                secure.
+              </p>
+            </div>
+            <div class="p-6">
+              <form id="update-password-form" class="space-y-6">
+                <div>
+                  <label
+                    for="currentPassword"
+                    class="block text-sm font-medium text-gray-700"
+                    >Current Password</label
+                  >
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    id="currentPassword"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="newPassword"
+                    class="block text-sm font-medium text-gray-700"
+                    >New Password</label
+                  >
+                  <input
+                    type="password"
+                    name="newPassword"
+                    id="newPassword"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="confirmPassword"
+                    class="block text-sm font-medium text-gray-700"
+                    >Confirm New Password</label
+                  >
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900 transition shadow-sm text-sm font-medium"
+                  >
+                    Update Password
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <p>&copy; 2025 DevCamper. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="/main.js" type="module"></script>
+  </body>
+</html>

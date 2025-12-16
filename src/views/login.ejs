@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Login</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://favicon.io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://favicon.io/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://favicon.io/apple-touch-icon.png"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 flex flex-col min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex-shrink-0 flex items-center">
+            <a href="/" class="text-xl font-bold text-indigo-600"
+              >Dev<span class="text-gray-800">Camper</span></a
+            >
+          </div>
+          <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
+            <a
+              href="/"
+              class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600"
+              >Home Page</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div
+      class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    >
+      <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-md">
+        <div>
+          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <i class="fas fa-sign-in-alt text-indigo-600 mr-2"></i> Login
+          </h2>
+          <p class="mt-2 text-center text-sm text-gray-600">
+            Log in to list your bootcamp or rate, review and favorite bootcamps
+          </p>
+          <% if (msg.success) { %>
+          <p class="text-green-500 text-center mt-4 text-sm">
+            <%= msg.success %>
+          </p>
+          <% } else if (msg.error) { %>
+          <p class="text-red-500 text-center mt-4 text-sm"><%= msg.error %></p>
+          <% } %>
+          <% if (msg) { %>
+          <p class="text-red-500 text-center mt-4 text-sm"><%= msg %></p>
+          <% } %>
+        </div>
+        <form class="mt-8 space-y-6" action="/api/v1/login" method="POST">
+          <div class="rounded-md shadow-sm -space-y-px">
+            <div class="mb-4">
+              <label
+                for="email-address"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Email Address</label
+              >
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div>
+              <label
+                for="password"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Password</label
+              >
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Enter your password"
+              />
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              />
+              <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                Remember me
+              </label>
+            </div>
+
+            <div class="text-sm">
+              <a
+                href="/api/v1/forget-password"
+                class="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot your password?
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                <i
+                  class="fas fa-sign-in-alt text-indigo-500 group-hover:text-indigo-400"
+                ></i>
+              </span>
+              Login
+            </button>
+          </div>
+        </form>
+
+        <!-- Google Login Button -->
+        <div class="mt-4">
+          <a
+            href="/api/v1/auth/google"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+              <i
+                class="fab fa-google text-blue-500 group-hover:text-blue-400 bg-white rounded-full p-1 w-6 h-6 flex items-center justify-center text-xs"
+              ></i>
+            </span>
+            Sign in with Google
+          </a>
+        </div>
+        <div class="text-center mt-4">
+          <p class="text-sm text-gray-600">
+            Don't have an account?
+            <a
+              href="/api/v1/register"
+              class="font-medium text-indigo-600 hover:text-indigo-500"
+              >Register</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">DevCamper</h3>
+            <p class="text-gray-400">
+              Find the best coding bootcamps and courses to kickstart your
+              development career.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/api/v1/bootcamps"
+                  class="text-gray-400 hover:text-white"
+                  >Browse Bootcamps</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">About Us</a>
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-twitter text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-facebook text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-instagram text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-github text-xl"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm"
+        >
+          <p>&copy; 2025 DevCamper. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

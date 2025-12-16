@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Manage Reviews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg mb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex-shrink-0 flex items-center">
+            <a href="/" class="text-xl font-bold text-indigo-600"
+              >Dev<span class="text-gray-800">Camper</span></a
+            >
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="text-gray-700">Welcome, Admin</span>
+            <a href="#" class="text-red-600 hover:text-red-800 font-medium"
+              ><i class="fas fa-sign-out-alt"></i> Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Manage Reviews</h1>
+      </div>
+
+      <!-- Reviews Table -->
+      <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+        <div class="overflow-x-auto">
+          <table class="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Review Title
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Rating
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Bootcamp
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% reviews.forEach(function(review) { %>
+              <tr id="<%= review._id %>" class="review-row">
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p
+                    class="title-review text-gray-900 whitespace-no-wrap font-semibold cursor-pointer open-modal"
+                  >
+                    <%= review.title %>
+                  </p>
+                  <p
+                    class="review-text text-gray-500 text-xs truncate max-w-xs"
+                  >
+                    <%= review.text %>
+                  </p>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <span
+                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                  >
+                    <span
+                      aria-hidden
+                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                    ></span>
+                    <span class="relative"><%= review.rating %></span>
+                  </span>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    <%= review.bootcamp ? review.bootcamp.name : 'Unknown Bootcamp' %>
+                  </p>
+                </td>
+                <td
+                  class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right"
+                >
+                  <div class="flex justify-end space-x-2">
+                    <button
+                      id="<%= review._id %>"
+                      class="delete-review-btn text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-3 py-1 rounded text-xs font-medium transition duration-150"
+                    >
+                      <i class="fas fa-trash mr-1"></i> Remove
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <% }); %>
+            </tbody>
+          </table>
+          <% if (reviews.length === 0) { %>
+          <div class="px-5 py-5 bg-white text-sm text-center text-gray-500">
+            No reviews found.
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a
+          href="/api/v1/bootcamps/dashboard"
+          class="inline-block bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded transition duration-200"
+        >
+          <i class="fas fa-arrow-left mr-2"></i> Back to Bootcamps
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <p>&copy; 2025 DevCamper. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Review Box -->
+    <div
+      id="reviewModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 flex items-center justify-center"
+    >
+      <div
+        class="relative p-8 border w-full max-w-2xl shadow-xl rounded-lg bg-white"
+      >
+        <div class="text-left">
+          <h3
+            class="text-2xl leading-6 font-bold text-gray-900 mb-4"
+            id="modalTitle"
+          >
+            
+          </h3>
+          <div class="mt-2 text-gray-600">
+            <p class="text-base leading-relaxed" id="modalContent">
+              
+            </p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button
+            id="closeModalBtn"
+            class="px-6 py-2 bg-indigo-600 text-white text-base font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Review Box -->
+    <script src="/main.js" type="module"></script>
+  </body>
+</html>

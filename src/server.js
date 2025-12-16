@@ -1,0 +1,89 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+import express from "express";
+import https from "https";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import path from "path";
+import dotenv from "dotenv";
+import morgan from "morgan";
+import colors from "colors";
+import cookieParser from "cookie-parser";
+import passport from "./config/passport.js";
+import bootRouter from "./routes/boot.route.js";
+import courseRouter from "./routes/course.route.js";
+import homeRouter from "./routes/home.route.js";
+import reviewsRouter from "./routes/reviews.route.js";
+import registerRouter from "./routes/register.route.js";
+import loginRouter from "./routes/login.route.js";
+import logoutRouter from "./routes/logout.route.js";
+import googleRouter from "./routes/google.route.js";
+import forgotRouter from "./routes/forget.route.js";
+import resetRouter from "./routes/reset.route.js";
+import usersRouter from "./routes/user.route.js";
+import accountRouter from "./routes/account.route.js";
+import { errorHandler } from "./middleware/errors.js";
+import { connectWithMongoDB } from "./config/mongo.js";
+import fileUpload from "express-fileupload";
+dotenv.config();
+
+const PORT = process.env.PORT || 8000;
+const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Set query parser to extended to support nested objects
+app.set("query parser", "extended");
+
+// cookie parser
+app.use(cookieParser());
+
+app.use(express.json());
+app.use(fileUpload());
+app.use(express.urlencoded({ extended: false }));
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// passport initialize
+app.use(passport.initialize());
+
+// Setup routes (api/v1)
+app.use("/", homeRouter);
+app.use("/api/v1/register", registerRouter);
+app.use("/api/v1/login", loginRouter);
+app.use("/api/v1/logout", logoutRouter);
+app.use("/api/v1/bootcamps", bootRouter);
+app.use("/api/v1/courses", courseRouter);
+app.use("/api/v1/reviews", reviewsRouter);
+app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/account", accountRouter);
+app.use("/api/v1/", forgotRouter);
+app.use("/api/v1/", resetRouter);
+app.use("/api/v1/", googleRouter);
+app.use(errorHandler);
+
+// render 404 error
+//app.use("/", (req, res) => res.status(404).render("errors/404"));
+
+connectWithMongoDB(process.env.MONGO_URL)
+  .then(() => console.log("--> Connect Successfully with MongoDB".blue.inverse))
+  .catch((err) =>
+    console.log("Faild to connect with MongoDB".red.inverse, err)
+  );
+
+const serverSll = https.createServer({
+  key: fs.readFileSync(path.join(__dirname, 'certs', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'certs', 'cert.pem')),
+}, app);
+
+serverSll.listen(PORT, () =>
+  console.log(
+    `--> The Server is running on mode ${process.env.NODE_ENV} on ${PORT}`
+      .yellow.inverse
+  )
+);

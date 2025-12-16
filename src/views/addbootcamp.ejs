@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Add Bootcamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg mb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex-shrink-0 flex items-center">
+            <a href="/" class="text-xl font-bold text-indigo-600"
+              >Dev<span class="text-gray-800">Camper</span></a
+            >
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/api/v1/bootcamps/dashboard"
+              class="text-gray-600 hover:text-gray-900 font-medium"
+              ><i class="fas fa-arrow-left mr-1"></i> Back to Dashboard</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="bg-indigo-600 px-6 py-4">
+          <h1 class="text-2xl font-bold text-white">Add New Bootcamp</h1>
+          <p class="text-indigo-100 text-sm">
+            Fill in the details to create a new bootcamp.
+          </p>
+        </div>
+
+        <div class="p-6">
+          <form id="add-bootcamp-form">
+            <!-- Basic Info Section -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+              Basic Information
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Devworks Bootcamp"
+                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Website</label
+                >
+                <input
+                  type="url"
+                  name="website"
+                  placeholder="https://example.com"
+                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="(111) 111-1111"
+                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="contact@example.com"
+                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
+                />
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Description</label
+              >
+              <textarea
+                name="description"
+                rows="4"
+                placeholder="Description of the bootcamp..."
+                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
+                required
+              ></textarea>
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Bootcamp Image</label
+              >
+              <input
+                type="file"
+                name="file"
+                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                Upload a JPEG or PNG image. Max size 1MB.
+              </p>
+            </div>
+
+            <!-- Location Section -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+              Location
+            </h3>
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Address</label
+              >
+              <input
+                type="text"
+                name="address"
+                placeholder="123 Main St, Boston, MA"
+                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
+                required
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                Full address including city, state and zip code.
+              </p>
+            </div>
+
+            <!-- Careers Section -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+              Careers & Options
+            </h3>
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Careers (Select all that apply)</label
+              >
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="careers"
+                    value="Web Development"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600"
+                    >Web Development</span
+                  >
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="careers"
+                    value="Mobile Development"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600"
+                    >Mobile Development</span
+                  >
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="careers"
+                    value="UI/UX"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600">UI/UX</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="careers"
+                    value="Data Science"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600">Data Science</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="careers"
+                    value="Business"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600">Business</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="careers"
+                    value="Other"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600">Other</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-gray-50 p-4 rounded-md">
+                <label class="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    name="housing"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-5 w-5"
+                  />
+                  <span class="text-gray-700 font-medium">Housing</span>
+                </label>
+                <p class="text-xs text-gray-500 mt-1 ml-8">
+                  Provides on-campus housing.
+                </p>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-md">
+                <label class="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    name="jobAssistance"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-5 w-5"
+                  />
+                  <span class="text-gray-700 font-medium">Job Assistance</span>
+                </label>
+                <p class="text-xs text-gray-500 mt-1 ml-8">
+                  Provides career support.
+                </p>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-md">
+                <label class="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    name="jobGuarantee"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-5 w-5"
+                  />
+                  <span class="text-gray-700 font-medium">Job Guarantee</span>
+                </label>
+                <p class="text-xs text-gray-500 mt-1 ml-8">
+                  Guarantees job placement.
+                </p>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-md">
+                <label class="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    name="acceptGi"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-5 w-5"
+                  />
+                  <span class="text-gray-700 font-medium">Accept GI Bill</span>
+                </label>
+                <p class="text-xs text-gray-500 mt-1 ml-8">
+                  Accepts GI Bill for tuition.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex justify-end pt-6 border-t">
+              <button
+                type="button"
+                class="bg-gray-300 text-gray-700 px-6 py-2.5 rounded-md mr-4 hover:bg-gray-400 font-medium transition duration-200"
+                onclick="window.history.back()"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="post-btn-bootcamp bg-indigo-600 text-white px-8 py-2.5 rounded-md hover:bg-indigo-700 font-medium shadow-md transition duration-200"
+              >
+                <i class="fas fa-check mr-2"></i> Create Bootcamp
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <p>&copy; 2025 DevCamper. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="/main.js" type="module"></script>
+  </body>
+</html>

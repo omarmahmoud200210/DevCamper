@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Browse Bootcamps</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://favicon.io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://favicon.io/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://favicon.io/apple-touch-icon.png"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 flex flex-col min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex-shrink-0 flex items-center">
+            <a href="/" class="text-xl font-bold text-indigo-600"
+              >Dev<span class="text-gray-800">Camper</span></a
+            >
+          </div>
+          <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
+             <p class="text-indigo-800 text-sm font-bold">Welcome, <%= user?.username ? user.username : "Guest" %></p>
+             <!-- Manage Dropdown -->
+             <div class="relative group dropdown">
+              <% if (user?.role === "admin" || user?.role === "publisher") { %>
+               <button class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 flex items-center focus:outline-none">
+                 Manage <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                  <a href="/api/v1/bootcamps/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Bootcamps</a>
+                  <% if (user.role === "admin") { %>
+                  <a href="/api/v1/reviews/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Reviews</a>
+                  <a href="/api/v1/users/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Users</a>
+                  <% } %>
+                  <a href="/api/v1/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Account</a>
+                  <div class="border-t border-gray-100"></div>
+                </div>
+              </div>
+              <% } %>
+              <% if (user?.username) { %> 
+                <a
+                  href="/api/v1/logout"
+                  class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                  >logout</a
+                >
+              <% } %>
+            </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Search Section -->
+    <div class="bg-indigo-700 text-white py-10 mb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl mb-4">
+            Browse Bootcamps
+          </h1>
+          <p class="text-xl text-indigo-100 mb-8">
+            Find the best coding bootcamps
+          </p>
+
+          <form
+            action="/api/v1/bootcamps?"
+            method="GET"
+            class="max-w-2xl mx-auto flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <div class="flex-1">
+              <input
+                type="text"
+                name="name"
+                value="<%= name || ''%>"
+                placeholder="Search by Bootcamp Name..."
+                class="w-full px-4 py-3 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            <button
+              type="submit"
+              class="px-8 py-3 bg-indigo-500 hover:bg-indigo-600 rounded-md font-semibold transition-colors duration-200"
+            >
+              Search
+            </button>
+            <a
+              href="/api/v1/bootcamps"
+              class="px-8 py-3 bg-white hover:bg-gray-100 rounded-md text-indigo-600 font-semibold transition-colors duration-200"
+            >
+              All Bootcamps
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sidebar / Filter -->
+        <div class="lg:col-span-1">
+
+
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h4 class="text-xl font-bold text-gray-900 mb-4">Filter</h4>
+            <form action="/api/v1/bootcamps" method="GET">
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                  >Location</label
+                >
+                <input
+                  type="text"
+                  name="zipcode"
+                  value="<%= zipcode || ''%>"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter Zipcode"
+                />
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                  >Miles From</label
+                >
+                <input
+                  type="number"
+                  name="distance"
+                  value="<%= distance || ''%>"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter Miles"
+                />
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                  >Rating</label
+                >
+                <select
+                  class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  name="rating"
+                >
+                  <option value="" <%= !rating ? 'selected' : '' %>>Any</option>
+                  <option value="9" <%= rating === '9' ? 'selected' : '' %>>9+</option>
+                  <option value="8" <%= rating === '8' ? 'selected' : '' %>>8+</option>
+                  <option value="7" <%= rating === '7' ? 'selected' : '' %>>7+</option>
+                  <option value="6" <%= rating === '6' ? 'selected' : '' %>>6+</option>
+                  <option value="5" <%= rating === '5' ? 'selected' : '' %>>5+</option>
+                </select>
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                  >Budget</label
+                >
+                <select
+                  class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  name="budget"
+                >
+                  <option value="" <%= !budget ? 'selected' : '' %>>Any</option>
+                  <option value="20000" <%= budget === '20000' ? 'selected' : '' %>>$20,000</option>
+                  <option value="15000" <%= budget === '15000' ? 'selected' : '' %>>$15,000</option>
+                  <option value="10000" <%= budget === '10000' ? 'selected' : '' %>>$10,000</option>
+                  <option value="8000" <%= budget === '8000' ? 'selected' : '' %>>$8,000</option>
+                  <option value="6000" <%= budget === '6000' ? 'selected' : '' %>>$6,000</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+              >
+                Find Bootcamps
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bootcamps List -->
+        <div class="lg:col-span-3 space-y-6">
+          <!-- Bootcamp 1 -->
+          <% if (bootcamps.length === 0) { %>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+              <h3 class="text-xl font-medium text-gray-900 mb-2">No Bootcamps Found</h3>
+              <p class="text-gray-600">Try adjusting your search or filter criteria.</p>
+              <a href="/api/v1/bootcamps" class="inline-block mt-4 text-indigo-600 hover:text-indigo-800 font-medium">Clear Filters</a>
+            </div>
+          <% } else { %>
+            <% bootcamps.forEach((bootcamp, index) => { %>
+            <div
+              class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row hover:shadow-xl transition-shadow duration-300"
+            >
+              <div class="md:w-1/3 h-48 md:h-auto relative">
+                <% 
+                  let photoURL = bootcamp.photo;
+                  if (!photoURL.startsWith("http") || !photoURL.startsWith("https")) {
+                    photoURL = "/uploads/" + photoURL;
+                  }
+                %>
+                <img
+                  src="<%= photoURL %>"
+                  alt="DevWorks Bootcamp"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-6 md:w-2/3 flex flex-col justify-between">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <h3 class="text-2xl font-bold text-gray-900">
+                     <a href="/api/v1/bootcamps/<%= bootcamp._id %>"><%= bootcamp.name %></a>
+                    </h3>
+                    <span
+                      class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold"
+                      ><%= bootcamp.averageRating ? bootcamp.averageRating : 0 %></span
+                    >
+                  </div>
+                  <p class="text-gray-600 mt-2 text-sm">
+                    <i class="fas fa-map-marker-alt mr-1 text-indigo-500"></i>
+                    <%= bootcamp.location.formattedAddress %>
+                  </p>
+  
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+                      ><%= bootcamp.careers[0] %></span
+                    >
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+                      ><%= bootcamp.careers[1] %></span
+                    >
+                  </div>
+                </div>
+                <div class="mt-4 flex items-center justify-between">
+                  <p class="text-gray-500 text-sm">
+                    Careers: <%= bootcamp.careers.slice(0, 2).join(", ") %>
+                  </p>
+                  <a
+                    href="/api/v1/bootcamps/<%= bootcamp._id %>"
+                    class="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
+                    >View Details <i class="fas fa-arrow-right ml-1"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+          <% } %>
+          <!-- Bootcamp 1 -->
+          <!-- Pagination -->
+          <div
+            class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-lg shadow-md"
+          >
+            <div
+              class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+            >
+              <div>
+                <p class="text-sm text-gray-700">
+                  Showing <span class="font-medium"><%= page %></span> to
+                  <span class="font-medium"><%= totalPages %></span>
+                </p>
+              </div>
+              <div>
+                <nav
+                  class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                  aria-label="Pagination"
+                >
+                  <a
+                    href="#"
+                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                  >
+                    <span class="sr-only">Previous</span>
+                    <i class="fas fa-chevron-left"></i>
+                  </a>
+
+                  <% if (totalPages > 1) { %> <% for (let i = 1; i <=
+                  totalPages; i++) { %>
+                  <a
+                    href="?page=<%= i %>"
+                    aria-current="page"
+                    class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  >
+                    <%= i %>
+                  </a>
+                  <% } %> <% } else { %>
+                  <a
+                    href="?page=<%= 1 %>"
+                    aria-current="page"
+                    class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  >
+                    1
+                  </a>
+                  <% } %>
+
+                  <a
+                    href="#"
+                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                  >
+                    <span class="sr-only">Next</span>
+                    <i class="fas fa-chevron-right"></i>
+                  </a>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">DevCamper</h3>
+            <p class="text-gray-400">
+              Find the best coding bootcamps and courses to kickstart your
+              development career.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="/bootcamps" class="text-gray-400 hover:text-white"
+                  >Browse Bootcamps</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">About Us</a>
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-twitter text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-facebook text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-instagram text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-github text-xl"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm"
+        >
+          <p>&copy; 2025 DevCamper. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const dropdownBtn = document.querySelector(".dropdown button");
+      const menu = document.querySelector(".dropdown .dropdown-menu");
+
+      const handleDropdown = () => menu.classList.toggle("hidden");
+      const handleBlurDropdown = () => menu.classList.add("hidden");
+
+      dropdownBtn?.addEventListener("click", handleDropdown);
+      //document.addEventListener("blur", handleBlurDropdown);
+    </script>
+  </body>
+</html>

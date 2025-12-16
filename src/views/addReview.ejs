@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Write Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen"
+  >
+    <!-- Navigation -->
+    <nav class="bg-gray-800 p-4 shadow-lg text-white mb-8">
+      <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <a href="/" class="text-xl font-bold">DevCamper</a>
+      </div>
+    </nav>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+      <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+        <div class="bg-indigo-600 px-8 py-6">
+          <h1 class="text-2xl font-bold text-white">Write a Review</h1>
+          <p class="text-indigo-100 mt-1">
+            Review for
+            <span class="font-bold text-white"><%= bootcamp.name %></span>
+          </p>
+        </div>
+
+        <form id="add-review-form" class="p-8">
+          <div class="mb-6">
+            <label
+              class="block text-gray-700 font-bold mb-2 cursor-pointer"
+              for="rating"
+            >
+              Rating:
+              <span class="text-indigo-600" id="rating-display">10</span>/10
+            </label>
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value="10"
+              step="1"
+              name="rating"
+              id="rating"
+              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+            />
+            <div class="flex justify-between text-xs text-gray-500 mt-1">
+              <span>1 (Poor)</span>
+              <span>10 (Excellent)</span>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-gray-700 font-bold mb-2" for="title">
+              Review Title
+            </label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Example: Best coding bootcamp ever!"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200"
+              required
+            />
+          </div>
+
+          <div class="mb-8">
+            <label class="block text-gray-700 font-bold mb-2" for="text">
+              Review Details
+            </label>
+            <textarea
+              name="text"
+              id="text"
+              rows="6"
+              placeholder="Describe your experience, pros, cons, etc."
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200"
+              required
+            ></textarea>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <a
+              href="/api/v1/bootcamps/<%= bootcamp._id %>/reviews"
+              class="text-gray-600 hover:text-gray-800 font-medium transition duration-200"
+            >
+              Cancel
+            </a>
+            <button
+              id="<%= bootcamp._id %>"  
+            type="submit"
+              class="submit-review  bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-200 transform hover:-translate-y-0.5"
+            >
+              Submit Review
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <p>&copy; 2025 DevCamper. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="/main.js" type="module"></script>
+  </body>
+</html>

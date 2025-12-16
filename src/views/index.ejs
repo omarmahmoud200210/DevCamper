@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevCamper | Find Dev Bootcamps</title>
+    <!-- Favicon from favicon.io CDN -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://favicon.io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://favicon.io/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://favicon.io/apple-touch-icon.png"
+    />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex-shrink-0 flex items-center">
+            <h1 class="text-xl font-bold text-indigo-600">
+              Dev<span class="text-gray-800">Camper</span>
+            </h1>
+          </div>
+          <% if (user) { %>
+          <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
+            <p class="text-indigo-800 text-sm font-bold">Welcome, <%= user.username %></p>
+            <a
+              href="/api/v1/logout"
+              class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+              >logout</a
+            >
+          </div>
+          <% } else { %>
+          <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
+            <p class="text-indigo-800 text-sm font-bold">Welcome, Guest</p>
+            <a
+              href="/api/v1/login"
+              class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+              >login</a
+            >
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-indigo-700 text-white py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1
+            class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-4"
+          >
+            Find a Code Bootcamp
+          </h1>
+          <p class="max-w-2xl mx-auto text-xl text-indigo-100">
+            Find, rate and review coding bootcamps from around the world
+          </p>
+          <div class="mt-8 max-w-md mx-auto sm:flex sm:justify-center md:mt-12">
+            <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+              <a
+                href="api/v1/bootcamps"
+                class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+              >
+                Browse Bootcamps
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootcamps Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Bootcamp Card -->       
+        <% bootcamps.forEach((bootcamp, index) => { %>
+        <div
+          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+        >
+          <div class="h-48 bg-gray-300 relative">
+            <img
+              src="<%= bootcamp.photo %>"
+              alt="<%= bootcamp.name %>"
+              class="w-full h-full object-cover"
+            />
+            <div
+              class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent"
+            >
+              <h2 class="text-xl font-bold text-white"><%= bootcamp.name %></h2>
+              <p class="text-indigo-200 text-sm">
+                <i class="fas fa-map-marker-alt mr-1"></i> <%=
+                bootcamp.location.formattedAddress %>
+              </p>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-4"><%= bootcamp.description %></p>
+
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+                ><%= bootcamp.careers[0] %></span
+              >
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+                ><%= bootcamp.careers[1] %></span
+              >
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+                ><%= bootcamp.careers[2] %></span
+              >
+            </div>
+
+            <div class="border-t border-gray-200 pt-4 mt-4">
+              <h3 class="text-sm font-medium text-gray-900 mb-2">
+                Courses Offered:
+              </h3>
+              <ul class="space-y-2">
+                <% if (bootcamp.courses.length === 0) { %>
+                <li class="text-sm text-gray-500">No courses available</li>
+                <% } else { %> <% bootcamp.courses.slice(0, 2).forEach(course =>
+                { %>
+                <li class="text-sm text-gray-600 flex justify-between">
+                  <span
+                    ><i class="fas fa-book mr-2 text-indigo-500"></i> <%=
+                    course.title %></span
+                  >
+                  <span class="text-indigo-600 font-medium"
+                    >$<%= course.tuition %></span
+                  >
+                </li>
+                <% }) %> <% if (bootcamp.courses.length > 2) { %>
+                <li class="text-sm text-indigo-600 font-medium">
+                  +<%= bootcamp.courses.length - 2 %> more courses
+                </li>
+                <% } %> <% } %>
+              </ul>
+            </div>
+
+            <div class="mt-6 flex justify-between items-center">
+              <div class="flex items-center">
+                <div class="flex items-center text-yellow-400">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <span class="ml-1 text-gray-600 text-sm">(24)</span>
+                </div>
+              </div>
+              <a
+                href="/api/v1/bootcamps/<%= bootcamp._id %>"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+        <% } ) %>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">DevCamper</h3>
+            <p class="text-gray-400">
+              Find the best coding bootcamps and courses to kickstart your
+              development career.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="/bootcamps" class="text-gray-400 hover:text-white"
+                  >Browse Bootcamps</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">About Us</a>
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-twitter text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-facebook text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-instagram text-xl"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="fab fa-linkedin text-xl"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 text-center text-gray-400">
+          &copy; 2023 DevCamper. All rights reserved.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
