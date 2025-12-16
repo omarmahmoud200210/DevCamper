@@ -76,14 +76,45 @@ connectWithMongoDB(process.env.MONGO_URL)
     console.log("Faild to connect with MongoDB".red.inverse, err)
   );
 
-const serverSll = https.createServer({
-  key: fs.readFileSync(path.join(__dirname, 'certs', 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, 'certs', 'cert.pem')),
-}, app);
+const server = app;
 
-serverSll.listen(PORT, () =>
-  console.log(
-    `--> The Server is running on mode ${process.env.NODE_ENV} on ${PORT}`
-      .yellow.inverse
-  )
-);
+if (process.env.NODE_ENV === "development") {
+  try {
+    const serverSll = https.createServer(
+      {
+        key: fs.readFileSync(path.join(__dirname, "certs", "key.pem")),
+        cert: fs.readFileSync(path.join(__dirname, "certs", "cert.pem")),
+      },
+      app
+    );
+
+    serverSll.listen(PORT, () =>
+      console.log(
+        `--> The Server is running on mode ${process.env.NODE_ENV} on ${PORT}`
+          .yellow.inverse
+      )
+    );
+  } catch (error) {
+    console.log(
+      "Could not start HTTPS server (missing certs?). Falling back to HTTP.".red
+    );
+    app.listen(PORT, () =>
+      console.log(
+        `--> The Server is running HTTP on mode ${process.env.NODE_ENV} on ${PORT}`
+          .yellow.inverse
+      )
+    );
+  }
+}
+else {
+  if (!process.env.VERCEL) {
+    app.listen(PORT, () =>
+      console.log(
+        `--> The Server is running on mode ${process.env.NODE_ENV} on ${PORT}`
+          .yellow.inverse
+      )
+    );
+  }
+}
+
+export default app;
