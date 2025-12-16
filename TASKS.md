@@ -3,7 +3,6 @@
 ## 🚀 Backend API Development & Front End.
 
 ### ✅ Completed
-
 - [✅] **Bootcamp CRUD**: Basic Create, Read, Update, Delete operations.
 - [✅] **Geocoding**: Automatic location data from address.
 - [✅] **Geospatial Query**: Find bootcamps within a radius.
@@ -58,11 +57,11 @@
   - [✅] filter using the rating.
 - [✅] Upload the image when the user add a new bootcamp.
 - [✅] fix the refresh token issue.
-
+- [✅] Manage accounts.
 
 ### 🚧 In Progress
-- [] Manage accounts.
 - [] deploy on Vercel.
 
-
 ### 📋 Upcoming Tasks
+
+
