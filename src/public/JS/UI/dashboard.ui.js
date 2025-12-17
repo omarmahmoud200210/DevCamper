@@ -42,7 +42,9 @@ const handleCancelBootcampSection = (e) => {
 };
 
 const handleCourseEditButton = (e) => {
-  const form = document.querySelector(`.course-form[id="${e.target.id}"]`);
+  const button = e.target.closest(".course-edit-btn");
+  if (!button) return;
+  const form = document.querySelector(`.course-form[id="${button.id}"]`);
   if (form) form.classList.toggle("hidden");
 };
 
@@ -52,14 +54,18 @@ const handelCancelCourseSection = (e) => {
 };
 
 const handleAddCourse = (e) => {
-   const form = document.querySelector(`.course-form-add[id="${e.target.id}"]`);
-   if (form) form.classList.toggle("hidden");
+  const button = e.target.closest(".display-course-form");
+  if (!button) return;
+  const form = document.querySelector(`.course-form-add[id="${button.id}"]`);
+  if (form) form.classList.toggle("hidden");
 };
 
 addCourseBtn.forEach((btn) => btn.addEventListener("click", handleAddCourse));
+
 courseEditBtn.forEach((btn) =>
   btn.addEventListener("click", handleCourseEditButton)
 );
+
 cancelBtn?.forEach((btn) =>
   btn.addEventListener("click", handleCancelBootcampSection)
 );
