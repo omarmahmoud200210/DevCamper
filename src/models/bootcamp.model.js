@@ -147,16 +147,18 @@ bootCampSchema.pre("save", function (next) {
 bootCampSchema.pre("save", async function () {
   const loc = await geo.geocode(this.address);
 
-  this.location = {
-    type: "Point",
-    coordinates: [loc[0].longitude, loc[0].latitude],
-    formattedAddress: loc[0].formattedAddress,
-    street: loc[0].streetName,
-    city: loc[0].city,
-    state: loc[0].state,
-    zipCode: loc[0].zipcode,
-    country: loc[0].country,
-  };
+  if (loc && loc.length > 0) {
+    this.location = {
+      type: "Point",
+      coordinates: [loc[0].longitude, loc[0].latitude],
+      formattedAddress: loc[0].formattedAddress,
+      street: loc[0].streetName,
+      city: loc[0].city,
+      state: loc[0].state,
+      zipCode: loc[0].zipcode,
+      country: loc[0].country,
+    };
+  }
 });
 
 
