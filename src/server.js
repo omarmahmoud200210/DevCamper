@@ -24,6 +24,7 @@ import accountRouter from "./routes/account.route.js";
 import { errorHandler } from "./middleware/errors.js";
 import { connectWithMongoDB } from "./config/mongo.js";
 import fileUpload from "express-fileupload";
+import cors from "cors";
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
@@ -52,6 +53,14 @@ app.set("views", path.join(__dirname, "views"));
 // passport initialize
 app.use(passport.initialize());
 
+// cors setup
+const clientOrigin = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "https://localhost:8000";
+
+const corsOptions = { origin: clientOrigin };
+app.use(cors(corsOptions));
+
 // Setup routes (api/v1)
 app.use("/", homeRouter);
 app.use("/api/v1/register", registerRouter);
@@ -76,9 +85,10 @@ connectWithMongoDB(process.env.MONGO_URL)
     console.log("Faild to connect with MongoDB".red.inverse, err)
   );
 
-if (process.env.NODE_ENV === "development") {
+
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   try {
-    const serverSll = https.createServer(
+    const serverSSl = https.createServer(
       {
         key: fs.readFileSync(path.join(__dirname, "certs", "key.pem")),
         cert: fs.readFileSync(path.join(__dirname, "certs", "cert.pem")),
@@ -86,32 +96,11 @@ if (process.env.NODE_ENV === "development") {
       app
     );
 
-    serverSll.listen(PORT, () =>
-      console.log(
-        `--> The Server is running on mode ${process.env.NODE_ENV} on ${PORT}`
-          .yellow.inverse
-      )
-    );
-  } catch (error) {
-    console.log(
-      "Could not start HTTPS server (missing certs?). Falling back to HTTP.".red
-    );
-    app.listen(PORT, () =>
-      console.log(
-        `--> The Server is running HTTP on mode ${process.env.NODE_ENV} on ${PORT}`
-          .yellow.inverse
-      )
-    );
-  }
-}
-else {
-  if (!process.env.VERCEL) {
-    app.listen(PORT, () =>
-      console.log(
-        `--> The Server is running on mode ${process.env.NODE_ENV} on ${PORT}`
-          .yellow.inverse
-      )
-    );
+    serverSSl.listen(process.env.PORT, () => {
+      console.log(`Server is running on ${process.env.PORT}`);
+    });
+  } catch (err) {
+    console.log(err);
   }
 }
 
