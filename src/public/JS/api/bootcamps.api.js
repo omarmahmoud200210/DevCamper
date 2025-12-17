@@ -55,7 +55,7 @@ const addNewBootcamp = async (e) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    if (file) {
+    if (file && file.size > 0) {
       await uploadPhoto(formData, photoURL);
     }
 

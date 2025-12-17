@@ -12,7 +12,6 @@ const putOrPost = async (method, url, data) => {
     else {
       const errorData = await req.json();
       console.error("API Error:", errorData);
-      alert(errorData.error || "Failed to save the changes!!");
       return;
     }
   } catch (err) {
@@ -30,11 +29,11 @@ const deleteData = async (url) => {
 
     if (req.ok) window.location.reload();
     else {
-      alert("Failed to remove the bootcamp!");
+      console.log("Failed to remove the bootcamp!")
       return;
     }
   } catch (err) {
-    alert("Failed to remove the bootcamp!");
+    console.log("Failed to remove the bootcamp!")
     return;
   }
 };
@@ -50,12 +49,12 @@ const uploadPhoto = async (formData, url) => {
     if (res.ok) window.location.reload();
     else {
       const errorData = await res.json();
-      console.error("Upload Error:", errorData);
-      alert(errorData.error || "Failed to upload the photo!");
+      console.log(errorData.error || "Failed to upload the photo!");
       return;
     }
   } catch (err) {
-    alert("Failed to upload the photo!");
+    console.log("Failed to upload the photo!");
+    window.location.reload();
     return;
   }
 };

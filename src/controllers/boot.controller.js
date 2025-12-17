@@ -126,7 +126,6 @@ const createBootCamps = asyncHandler(async (req, res, next) => {
 
 const uploadPhoto = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
-  const photo = req.files.file;
 
   if (!bootcamp) {
     return next(
@@ -137,6 +136,8 @@ const uploadPhoto = asyncHandler(async (req, res, next) => {
   if (!req.files) {
     return next(new ErrorResponse("Please upload a photo", 400));
   }
+
+  const photo = req.files.file;
 
   if (!photo.mimetype.startsWith("image")) {
     return next(new ErrorResponse("Please upload an image", 400));
