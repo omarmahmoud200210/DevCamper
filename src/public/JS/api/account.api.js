@@ -2,8 +2,7 @@ import { putOrPost } from "/JS/api/api.js";
 
 // Update Details Logic
 document
-  .getElementById("update-details-form")
-  .addEventListener("submit", async (e) => {
+  .getElementById("update-details-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
@@ -18,8 +17,7 @@ document
 
 // Update Password Logic
 document
-  .getElementById("update-password-form")
-  .addEventListener("submit", async (e) => {
+  .getElementById("update-password-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
