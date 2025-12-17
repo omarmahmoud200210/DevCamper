@@ -10,7 +10,9 @@ const putOrPost = async (method, url, data) => {
 
     if (req.ok) window.location.reload();
     else {
-      alert("Failed to save the changes!!");
+      const errorData = await req.json();
+      console.error("API Error:", errorData);
+      alert(errorData.error || "Failed to save the changes!!");
       return;
     }
   } catch (err) {
@@ -40,14 +42,16 @@ const deleteData = async (url) => {
 // upload photo
 const uploadPhoto = async (formData, url) => {
   try {
-    const res = await fetch(`${API_URL}/${url}`, {
+    const res = await fetch(`/${url}`, {
       method: "put",
       body: formData,
     });
 
     if (res.ok) window.location.reload();
     else {
-      alert("Failed to upload the photo!");
+      const errorData = await res.json();
+      console.error("Upload Error:", errorData);
+      alert(errorData.error || "Failed to upload the photo!");
       return;
     }
   } catch (err) {
