@@ -40,7 +40,7 @@ const addNewBootcamp = async (e) => {
   data.acceptGi = !!formData.get("acceptGi");
   delete data.photo;
 
-  const res = await fetch("https://localhost:8000/api/v1/bootcamps", {
+  const res = await fetch("/api/v1/bootcamps", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

@@ -1,4 +1,4 @@
-const API_URL = `https://localhost:8000`;
+const API_URL = "";
 
 const putOrPost = async (method, url, data) => {
   try {
@@ -37,7 +37,6 @@ const deleteData = async (url) => {
   }
 };
 
-
 // upload photo
 const uploadPhoto = async (formData, url) => {
   try {
@@ -51,11 +50,10 @@ const uploadPhoto = async (formData, url) => {
       alert("Failed to upload the photo!");
       return;
     }
-  }
-  catch (err) {
+  } catch (err) {
     alert("Failed to upload the photo!");
     return;
   }
-}
+};
 
 export { putOrPost, deleteData, uploadPhoto };
