@@ -59,6 +59,7 @@ const addNewBootcamp = async (e) => {
       await uploadPhoto(formData, photoURL);
     }
 
+    window.location.reload();
   }
 };
 
