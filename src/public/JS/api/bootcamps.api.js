@@ -25,6 +25,14 @@ const removeBootcamp = async (e) => {
 
 const addNewBootcamp = async (e) => {
   e.preventDefault();
+
+  // Disable button to prevent multiple submissions
+  addBootcampBtn.disabled = true;
+
+  const originalBtnText = addBootcampBtn.innerHTML;
+  addBootcampBtn.innerHTML =
+    '<i class="fas fa-spinner fa-spin mr-2"></i> Creating...';
+
   const form = document.getElementById("add-bootcamp-form");
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
@@ -40,26 +48,39 @@ const addNewBootcamp = async (e) => {
   data.acceptGi = !!formData.get("acceptGi");
   delete data.photo;
 
-  const res = await fetch("/api/v1/bootcamps", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  try {
+    const res = await fetch("/api/v1/bootcamps", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
-  const result = await res.json();
+    const result = await res.json();
 
-  if (result.success) {
-    const newBootcampId = result.data._id;
-    const photoURL = `api/v1/bootcamps/${newBootcampId}/photo`;
+    if (result.success) {
+      const newBootcampId = result.data._id;
+      const photoURL = `api/v1/bootcamps/${newBootcampId}/photo`;
 
-    const formData = new FormData();
-    formData.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file);
 
-    if (file && file.size > 0) {
-      await uploadPhoto(formData, photoURL);
+      if (file && file.size > 0) {
+        addBootcampBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading Photo...';
+        await uploadPhoto(formData, photoURL);
+      }
+
+      window.location.reload();
+    } else {
+      alert(result.error || "Failed to create bootcamp");
+      addBootcampBtn.disabled = false;
+      addBootcampBtn.innerHTML = originalBtnText;
     }
-
-    window.location.reload();
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred. Please try again.");
+    addBootcampBtn.disabled = false;
+    addBootcampBtn.innerHTML = originalBtnText;
   }
 };
 
