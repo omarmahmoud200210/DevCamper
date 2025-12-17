@@ -2,7 +2,7 @@ const API_URL = "";
 
 const putOrPost = async (method, url, data) => {
   try {
-    const req = await fetch(`${API_URL}/${url}`, {
+    const req = await fetch(`/${url}`, {
       method: `${method}`,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -22,7 +22,7 @@ const putOrPost = async (method, url, data) => {
 // delete
 const deleteData = async (url) => {
   try {
-    const req = await fetch(`${API_URL}/${url}`, {
+    const req = await fetch(`/${url}`, {
       method: "delete",
     });
 
