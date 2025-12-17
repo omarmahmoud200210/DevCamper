@@ -7,13 +7,26 @@ const addBootcampBtn = document.querySelector(".post-btn-bootcamp");
 const submitBootcampsChanges = async (e) => {
   e.preventDefault();
 
+  const button = e.target.closest("button"); // The button that was clicked
+  const originalText = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
   const changesForm = e.target.closest("form");
   const bootcampId = changesForm.id;
   const form = new FormData(changesForm);
   const data = Object.fromEntries(form.entries());
   const url = `api/v1/bootcamps/${bootcampId}`;
 
-  await putOrPost("put", url, data);
+  const success = await putOrPost("put", url, data);
+
+  if (success) {
+    window.location.reload();
+  } else {
+    button.disabled = false;
+    button.innerHTML = originalText;
+    alert("Failed to update bootcamp.");
+  }
 };
 
 const removeBootcamp = async (e) => {

@@ -8,15 +8,17 @@ const putOrPost = async (method, url, data) => {
       body: JSON.stringify(data),
     });
 
-    if (req.ok) window.location.reload();
-    else {
+    if (req.ok) {
+      return true;
+    } else {
       const errorData = await req.json();
       console.error("API Error:", errorData);
-      return;
+      return false;
     }
   } catch (err) {
+    console.error(err);
     alert("Failed, There's something wrong!");
-    return;
+    return false;
   }
 };
 
@@ -29,11 +31,11 @@ const deleteData = async (url) => {
 
     if (req.ok) window.location.reload();
     else {
-      console.log("Failed to remove the bootcamp!")
+      console.log("Failed to remove the bootcamp!");
       return;
     }
   } catch (err) {
-    console.log("Failed to remove the bootcamp!")
+    console.log("Failed to remove the bootcamp!");
     return;
   }
 };
@@ -54,7 +56,6 @@ const uploadPhoto = async (formData, url) => {
     }
   } catch (err) {
     console.log("Failed to upload the photo!");
-    window.location.reload();
     return;
   }
 };
