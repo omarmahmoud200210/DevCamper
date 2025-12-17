@@ -1,4 +1,4 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import express from "express";
 import https from "https";
 import fs from "fs";
@@ -79,15 +79,16 @@ app.use(errorHandler);
 // render 404 error
 //app.use("/", (req, res) => res.status(404).render("errors/404"));
 
-connectWithMongoDB(process.env.MONGO_URL)
-  .then(() => console.log("--> Connect Successfully with MongoDB".blue.inverse))
-  .catch((err) =>
-    console.log("Faild to connect with MongoDB".red.inverse, err)
-  );
-
-
 if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   try {
+    connectWithMongoDB(process.env.MONGO_URL)
+      .then(() =>
+        console.log("--> Connect Successfully with MongoDB".blue.inverse)
+      )
+      .catch((err) =>
+        console.log("Faild to connect with MongoDB".red.inverse, err)
+      );
+
     const serverSSl = https.createServer(
       {
         key: fs.readFileSync(path.join(__dirname, "certs", "key.pem")),
