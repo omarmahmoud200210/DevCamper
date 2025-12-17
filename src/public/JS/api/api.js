@@ -29,10 +29,10 @@ const deleteData = async (url) => {
       method: "delete",
     });
 
-    if (req.ok) window.location.reload();
+    if (req.ok) return true;
     else {
       console.log("Failed to remove the bootcamp!");
-      return;
+      return false;
     }
   } catch (err) {
     console.log("Failed to remove the bootcamp!");
@@ -48,11 +48,11 @@ const uploadPhoto = async (formData, url) => {
       body: formData,
     });
 
-    if (res.ok) window.location.reload();
+    if (res.ok) return true;
     else {
       const errorData = await res.json();
       console.log(errorData.error || "Failed to upload the photo!");
-      return;
+      return false;
     }
   } catch (err) {
     console.log("Failed to upload the photo!");

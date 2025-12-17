@@ -6,15 +6,15 @@ const renderRegisterPage = (req, res) => res.render("register");
 const handleRegistration = async (req, res) => {
   const { username, email, password, role } = req.body;
 
-  if ((!username, !email, !password, !role)) {
-    res.render("register", { msg: "Please fill in all fields" });
+  if (!username || !email || !password || !role) {
+    return res.render("register", { msg: "Please fill in all fields" });
   }
 
   try {
-    const user = await User.findOne({ emai: email });
+    const user = await User.findOne({ email: email });
 
     if (user) {
-      res.render("register", { msg: "User already exists" });
+      return res.render("register", { msg: "User already exists" });
     } else {
       let hashedPassword = await hashPassword(password);
 

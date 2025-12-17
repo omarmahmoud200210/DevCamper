@@ -58,10 +58,12 @@
 - [✅] Upload the image when the user add a new bootcamp.
 - [✅] fix the refresh token issue.
 - [✅] Manage accounts.
+- [✅] deploy on Vercel.
 
 ### 🚧 In Progress
-- [] deploy on Vercel.
+- [] Production issues
+  - [] Responsive design
+  - [] Upload Photo (Cloudinary)
+  - [] location service
 
 ### 📋 Upcoming Tasks
-
-
