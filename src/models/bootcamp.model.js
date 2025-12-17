@@ -144,41 +144,49 @@ bootCampSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
 });
 
-bootCampSchema.pre("save", async function () {
-  const loc = await geo.geocode(this.address);
+bootCampSchema.pre("save", async function (next) {
+  try {
+    const loc = await geo.geocode(this.address);
 
-  if (loc && loc.length > 0) {
-    this.location = {
-      type: "Point",
-      coordinates: [loc[0].longitude, loc[0].latitude],
-      formattedAddress: loc[0].formattedAddress,
-      street: loc[0].streetName,
-      city: loc[0].city,
-      state: loc[0].state,
-      zipCode: loc[0].zipcode,
-      country: loc[0].country,
-    };
+    if (loc && loc.length > 0) {
+      this.location = {
+        type: "Point",
+        coordinates: [loc[0].longitude, loc[0].latitude],
+        formattedAddress: loc[0].formattedAddress,
+        street: loc[0].streetName,
+        city: loc[0].city,
+        state: loc[0].state,
+        zipCode: loc[0].zipcode,
+        country: loc[0].country,
+      };
+    }
+  } catch (err) {
+    console.error("Geocoding error:", err.message);
+    // Continue saving even if geocoding fails
   }
 });
 
-
-bootCampSchema.pre("deleteOne", { document: true, query: false } , async function () { 
-  await this.model("Course").deleteMany({ bootcamp: this._id });
-  console.log("Course removed as the bootcamp removed :))")
-});
+bootCampSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function () {
+    await this.model("Course").deleteMany({ bootcamp: this._id });
+    console.log("Course removed as the bootcamp removed :))");
+  }
+);
 
 bootCampSchema.virtual("courses", {
   ref: "Course",
   localField: "_id",
   foreignField: "bootcamp",
-  justOne: false
+  justOne: false,
 });
 
 bootCampSchema.virtual("reviews", {
   ref: "reviews",
   localField: "_id",
   foreignField: "bootcamp",
-  justOne: false
+  justOne: false,
 });
 
 const Bootcamp = mongoose.model("Bootcamp", bootCampSchema);
