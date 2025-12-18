@@ -62,6 +62,8 @@
 
 ### 🚧 In Progress
 - [] Production issues
+  - [] register issue
+  - [] user manage account.
   - [] Responsive design
   - [] Upload Photo (Cloudinary)
   - [] location service

@@ -4,8 +4,3 @@ import "./JS/api/courses.api.js";
 import "./JS/api/reviews.api.js";
 import "./JS/api/users.api.js";
 import "./JS/api/account.api.js";
-
-
-
-
-
