@@ -62,7 +62,7 @@ const handleRegistration = async (req, res) => {
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
-        res.redirect("/");
+        res.redirect(303, "/");
       }
     }
   } catch (err) {
