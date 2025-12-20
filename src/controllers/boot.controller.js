@@ -152,7 +152,9 @@ const uploadPhoto = asyncHandler(async (req, res, next) => {
     async (err, result) => {
       if (err) {
         console.log(err);
-        return next(new ErrorResponse("Photo upload failed", 400));
+        return next(
+          new ErrorResponse(`Photo upload failed: ${err.message}`, 400)
+        );
       }
 
       bootcamp.photo = result.secure_url;
