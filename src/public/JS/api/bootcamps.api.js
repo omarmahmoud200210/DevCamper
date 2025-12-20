@@ -98,7 +98,7 @@ const addNewBootcamp = async (e) => {
         await uploadPhoto(formData, photoURL);
       }
 
-      window.location.reload();
+      // window.location.reload();
     } else {
       alert(result.error || "Failed to create bootcamp");
       button.disabled = false;
