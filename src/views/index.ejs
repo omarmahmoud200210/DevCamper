@@ -41,16 +41,16 @@
           </div>
           <% if (user) { %>
           <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
-            <p class="text-indigo-800 text-sm font-bold">Welcome, <%= user.username %></p>
+            <p class="text-indigo-800 text-sm font-bold md:text-base">Welcome, <%= user.username %></p>
             <a
               href="/api/v1/logout"
-              class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+              class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 md:text-base"
               >logout</a
             >
           </div>
           <% } else { %>
           <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
-            <p class="text-indigo-800 text-sm font-bold">Welcome, Guest</p>
+            <p class="text-indigo-800 text-sm font-bold md:text-base">Welcome, Guest</p>
             <a
               href="/api/v1/login"
               class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
