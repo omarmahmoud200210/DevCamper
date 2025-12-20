@@ -32,11 +32,11 @@ const submitBootcampsChanges = async (e) => {
 const removeBootcamp = async (e) => {
   const bootcampId = e.target.parentElement.parentElement.parentElement.id;
   const url = `api/v1/bootcamps/${bootcampId}`;
-
   const button = e.target.closest("button"); // The button that was clicked
   const originalText = button.innerHTML;
   button.disabled = true;
   button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
 
   const deletedItem = await deleteData(url);
 

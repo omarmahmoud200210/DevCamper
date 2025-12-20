@@ -1,16 +1,16 @@
 import { putOrPost, deleteData } from "../api/api.js";
 
-const submitCourseBtn = document.querySelector(".submit-changes-course");
+const submitCourseBtn = document.querySelectorAll(".submit-changes-course");
 const courseDeleteBtn = document.querySelectorAll(".course-delete-btn");
 const addCourseBtn = document.querySelectorAll(".add-course-btn");
 
 const submitCourseChanges = async (e) => {
   e.preventDefault();
 
-   const button = e.target.closest("button");
-   const originalBtnText = button.innerHTML;
-   button.disabled = true;
-   button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+  const button = e.target.closest("button");
+  const originalBtnText = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
   const changesForm = e.target.closest("form");
   const courseId = changesForm.id;
@@ -34,7 +34,21 @@ const removeCourse = async (e) => {
     e.target.parentElement.parentElement.parentElement.nextElementSibling.id;
   const url = `api/v1/courses/${courseId}`;
 
-  await deleteData(url);
+  const button = e.target.closest("button"); // The button that was clicked
+  const originalText = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
+  const res = await deleteData(url);
+
+  if (res) {
+    window.location.reload();
+  }
+  else {
+    button.disabled = false;
+    button.innerHTML = originalText;
+    alert("Failed to delete course.");
+  }
 };
 
 const addNewCourse = async (e) => {
@@ -44,7 +58,6 @@ const addNewCourse = async (e) => {
   const originalBtnText = button.innerHTML;
   button.disabled = true;
   button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-
 
   const form = e.target.closest("form");
   const bootcampId = form.id;
@@ -63,6 +76,6 @@ const addNewCourse = async (e) => {
   }
 };
 
-submitCourseBtn?.addEventListener("click", submitCourseChanges);
+submitCourseBtn?.forEach((btn) => btn.addEventListener("click", submitCourseChanges));
 courseDeleteBtn?.forEach((btn) => btn.addEventListener("click", removeCourse));
 addCourseBtn.forEach((btn) => btn.addEventListener("click", addNewCourse));
