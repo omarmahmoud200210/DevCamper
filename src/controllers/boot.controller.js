@@ -5,6 +5,7 @@ import geo from "../utils/geocoder.js";
 import { ErrorResponse } from "../middleware/errors.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -145,12 +146,19 @@ const uploadPhoto = asyncHandler(async (req, res, next) => {
 
   photo.name = `photo_${bootcamp._id}${path.parse(photo.name).ext}`;
 
-  const photoPath = path.join(__dirname, `../public/uploads`);
+  cloudinary.v2.uploader.upload(photo.path, async (err, result) => {
+    if (err) {
+      return next(new ErrorResponse("Photo upload failed", 400));
+    }
+    
+    bootcamp.photo = result.secure_url;
+    bootcamp.photoId = result.public_id;
+    await bootcamp.save();
+    
+    fs.unlinkSync(photo.path);
 
-  await photo.mv(`${photoPath}/${photo.name}`);
-  await bootcamp.updateOne({ photo: photo.name });
-
-  res.status(200).json({ success: true, data: bootcamp });
+    res.status(200).json({ success: true, data: bootcamp });
+  });
 });
 
 const updateBootCamps = asyncHandler(async (req, res, next) => {
@@ -176,6 +184,8 @@ const deleteBootCamps = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
   }
+
+  cloudinary.v2.uploader.destroy(bootcamp.photoId);
 
   await bootcamp.deleteOne();
   res.status(200).json({ success: true, data: {} });

@@ -105,6 +105,11 @@ const bootCampSchema = new Schema({
     default: "no-photo.jpg",
   },
 
+  photoId: {
+    type: String,
+    default: "",
+  },
+
   housing: {
     type: Boolean,
     default: false,

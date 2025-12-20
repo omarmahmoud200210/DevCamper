@@ -38,7 +38,7 @@ app.set("query parser", "extended");
 app.use(cookieParser());
 
 app.use(express.json());
-app.use(fileUpload());
+app.use(fileUpload({ useTempFiles: true }));
 app.use(express.urlencoded({ extended: false }));
 
 if (process.env.NODE_ENV === "development") {
