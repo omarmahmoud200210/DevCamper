@@ -24,7 +24,7 @@ const toggleSection = (section, id, section2) => {
 };
 
 const handleCourseButton = (e) => {
-  const bootcampId = e.target.parentElement.parentElement.parentElement.id;
+  const bootcampId = e.target.closest("tr").id;
   toggleSection(coursesSection, bootcampId, editSection);
 };
 
