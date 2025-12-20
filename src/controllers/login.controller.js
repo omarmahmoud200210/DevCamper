@@ -61,7 +61,7 @@ const handleLogin = async (req, res) => {
         });
       }
 
-      return res.redirect("/");
+      return res.redirect(303, "/");
     }
   }
 };

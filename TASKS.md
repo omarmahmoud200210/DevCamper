@@ -62,10 +62,11 @@
 
 ### 🚧 In Progress
 - [] Production issues
-  - [] register issue
+  - [✅] register issue
   - [] user manage account.
   - [] Responsive design
   - [] Upload Photo (Cloudinary)
-  - [] location service
+  - [] location service 
+      (openmap will not be used in production and i won't be able to use another service coz i don't have credit card)
 
 ### 📋 Upcoming Tasks
