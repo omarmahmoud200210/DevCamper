@@ -1,4 +1,4 @@
-import { putOrPost } from "/JS/api/api.js";
+import { putOrPost } from "../api/api.js";
 
 // Update Details Logic
 document
@@ -7,11 +7,19 @@ document
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
-    // Call API (You need to implement this route)
+    const button = e.target.closest("button"); // The button that was clicked
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+
     const res = await putOrPost("put", "api/v1/account/updatedetails", data);
-    if (res && res.success) {
-      alert("Profile updated successfully");
+    if (res) {
       window.location.reload();
+    }
+    else {
+      button.disabled = false;
+      button.innerHTML = originalText;
+      alert("Failed to update profile.");
     }
   });
 
@@ -22,6 +30,11 @@ document
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
+    const button = e.target.closest("button"); // The button that was clicked
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+
     if (data.newPassword !== data.confirmPassword) {
       alert("New passwords do not match");
       return;
@@ -29,8 +42,12 @@ document
 
     // Call API
     const res = await putOrPost("put", "api/v1/account/updatepassword", data);
-    if (res && res.success) {
-      alert("Password updated successfully");
-      e.target.reset();
+    if (res) {
+      window.location.reload();
+    }
+    else {
+      button.disabled = false;
+      button.innerHTML = originalText;
+      alert("Failed to update password.");
     }
   });
