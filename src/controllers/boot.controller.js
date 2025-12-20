@@ -146,8 +146,12 @@ const uploadPhoto = asyncHandler(async (req, res, next) => {
 
   photo.name = `photo_${bootcamp._id}${path.parse(photo.name).ext}`;
 
-  cloudinary.v2.uploader.upload(photo.path, {folders: 'bootcamps_photos'} ,async (err, result) => {
+  cloudinary.v2.uploader.upload(
+    photo.path,
+    { folder: "bootcamps_photos" },
+    async (err, result) => {
       if (err) {
+        console.log(err);
         return next(new ErrorResponse("Photo upload failed", 400));
       }
 
@@ -158,7 +162,8 @@ const uploadPhoto = asyncHandler(async (req, res, next) => {
       fs.unlinkSync(photo.path);
 
       res.status(200).json({ success: true, data: bootcamp });
-  });
+    }
+  );
 });
 
 const updateBootCamps = asyncHandler(async (req, res, next) => {
