@@ -147,7 +147,7 @@ const uploadPhoto = asyncHandler(async (req, res, next) => {
   photo.name = `photo_${bootcamp._id}${path.parse(photo.name).ext}`;
 
   cloudinary.v2.uploader.upload(
-    photo.path,
+    photo.tempFilePath,
     { folder: "bootcamps_photos" },
     async (err, result) => {
       if (err) {
@@ -159,7 +159,7 @@ const uploadPhoto = asyncHandler(async (req, res, next) => {
       bootcamp.photoId = result.public_id;
       await bootcamp.save();
 
-      fs.unlinkSync(photo.path);
+      fs.unlinkSync(photo.tempFilePath);
 
       res.status(200).json({ success: true, data: bootcamp });
     }
