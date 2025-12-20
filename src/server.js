@@ -4,6 +4,7 @@ import https from "https";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
+import os from "os";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import colors from "colors";
@@ -42,7 +43,7 @@ app.use(express.json());
 app.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: path.join(__dirname, "public", "uploads"),
+    tempFileDir: os.tmpdir(),
   })
 );
 
