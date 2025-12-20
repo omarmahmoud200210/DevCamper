@@ -2,7 +2,7 @@ import { putOrPost, deleteData, uploadPhoto } from "../api/api.js";
 
 const submitChangesBtn = document.querySelectorAll(".submit-changes");
 const removeBtn = document.querySelectorAll(".removeBtn");
-const addBootcampBtn = document.querySelectorAll(".post-btn-bootcamp");
+const addBootcampBtn = document.querySelector(".post-btn-bootcamp");
 
 const submitBootcampsChanges = async (e) => {
   e.preventDefault();
@@ -54,10 +54,11 @@ const addNewBootcamp = async (e) => {
   e.preventDefault();
 
   // Disable button to prevent multiple submissions
-  addBootcampBtn.disabled = true;
+  const button = e.target.closest("button");
+  button.disabled = true;
 
-  const originalBtnText = addBootcampBtn.innerHTML;
-  addBootcampBtn.innerHTML =
+  const originalBtnText = button.innerHTML;
+  button.innerHTML =
     '<i class="fas fa-spinner fa-spin mr-2"></i> Creating...';
 
   const form = document.getElementById("add-bootcamp-form");
@@ -92,7 +93,7 @@ const addNewBootcamp = async (e) => {
       formData.append("file", file);
 
       if (file && file.size > 0) {
-        addBootcampBtn.innerHTML =
+        button.innerHTML =
           '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading Photo...';
         await uploadPhoto(formData, photoURL);
       }
@@ -100,17 +101,17 @@ const addNewBootcamp = async (e) => {
       window.location.reload();
     } else {
       alert(result.error || "Failed to create bootcamp");
-      addBootcampBtn.disabled = false;
-      addBootcampBtn.innerHTML = originalBtnText;
+      button.disabled = false;
+      button.innerHTML = originalBtnText;
     }
   } catch (err) {
     console.error(err);
     alert("An error occurred. Please try again.");
-    addBootcampBtn.disabled = false;
-    addBootcampBtn.innerHTML = originalBtnText;
+    button.disabled = false;
+    button.innerHTML = originalBtnText;
   }
 };
 
 removeBtn?.forEach((btn) => btn.addEventListener("click", removeBootcamp));
 submitChangesBtn?.forEach((btn) => btn.addEventListener("click", submitBootcampsChanges));
-addBootcampBtn?.forEach((btn) => btn.addEventListener("click", addNewBootcamp));
+addBootcampBtn?.addEventListener("click", addNewBootcamp);

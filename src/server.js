@@ -38,7 +38,14 @@ app.set("query parser", "extended");
 app.use(cookieParser());
 
 app.use(express.json());
-app.use(fileUpload({ useTempFiles: true, tempFileDir: "./public/uploads" }));
+
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: path.join(__dirname, "public", "uploads"),
+  })
+);
+
 app.use(express.urlencoded({ extended: false }));
 
 if (process.env.NODE_ENV === "development") {
