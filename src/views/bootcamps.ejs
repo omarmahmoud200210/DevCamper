@@ -37,7 +37,7 @@
               >Dev<span class="text-gray-800">Camper</span></a
             >
           </div>
-          <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
+          <div class="flex items-center space-x-4 md:ml-6">
              <p class="text-indigo-800 text-sm font-bold">Welcome, <%= user?.username ? user.username : "Guest" %></p>
              <!-- Manage Dropdown -->
              <div class="relative group dropdown">
@@ -260,7 +260,7 @@
             class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-lg shadow-md"
           >
             <div
-              class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+              class="flex flex-col flex-1 items-center justify-between sm:flex-row"
             >
               <div>
                 <p class="text-sm text-gray-700">
@@ -281,8 +281,7 @@
                     <i class="fas fa-chevron-left"></i>
                   </a>
 
-                  <% if (totalPages > 1) { %> <% for (let i = 1; i <=
-                  totalPages; i++) { %>
+                  <% if (totalPages > 1) { %> <% for (let i = 1; i <= totalPages; i++) { %>
                   <a
                     href="?page=<%= i %>"
                     aria-current="page"

@@ -40,8 +40,10 @@
             </h1>
           </div>
           <% if (user) { %>
-          <div class="md:ml-6 md:flex md:items-center space-x-4">
-            <p class="text-indigo-800 text-sm font-bold md:text-base">Welcome, <%= user.username %></p>
+          <div class="flex items-center space-x-4 md:ml-6">
+            <p class="text-indigo-800 text-sm font-bold md:text-base">
+              Welcome, <%= user.username %>
+            </p>
             <a
               href="/api/v1/logout"
               class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 md:text-base"
@@ -49,8 +51,10 @@
             >
           </div>
           <% } else { %>
-          <div class="md:ml-6 md:flex md:items-center space-x-4">
-            <p class="text-indigo-800 text-sm font-bold md:text-base">Welcome, Guest</p>
+          <div class="flex items-center space-x-4 md:ml-6">
+            <p class="text-indigo-800 text-sm font-bold md:text-base">
+              Welcome, Guest
+            </p>
             <a
               href="/api/v1/login"
               class="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
@@ -91,7 +95,7 @@
     <!-- Bootcamps Grid -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Bootcamp Card -->       
+        <!-- Bootcamp Card -->
         <% bootcamps.forEach((bootcamp, index) => { %>
         <div
           class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
