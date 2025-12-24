@@ -14,13 +14,15 @@ import courseRouter from "../routes/course.route.js";
 import reviewsRouter from "../routes/reviews.route.js";
 import authenticationMiddleware from "../middleware/auth.js";
 import { authorization } from "../middleware/roles.js";
+import result from "../middleware/result.js";
+import Bootcamp from "../models/bootcamp.model.js";
 
 const bootRouter = express.Router();
 
 bootRouter.use("/:bootcampId/courses", courseRouter);
 bootRouter.use("/:bootcampId/reviews", reviewsRouter);
 
-bootRouter.get("/", authenticationMiddleware, getAllBootCamps);
+bootRouter.get("/", authenticationMiddleware, result(Bootcamp, "courses", "reviews"), getAllBootCamps);
 
 bootRouter.get(
   "/dashboard",
