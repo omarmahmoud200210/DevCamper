@@ -52,7 +52,7 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use(helmet());
+// app.use(helmet());
 
 app.use(xss());
 
