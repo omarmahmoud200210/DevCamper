@@ -22,7 +22,9 @@
     "express": "^5.2.1",
     "express-async-handler": "^1.2.0",
     "express-fileupload": "^1.5.2",
+    "express-rate-limit": "^8.2.1",
     "geocoder": "^0.2.3",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.0",
     "morgan": "^1.10.1",
@@ -32,7 +34,9 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "xss": "^1.0.15",
+    "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

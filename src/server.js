@@ -26,9 +26,12 @@ import { errorHandler } from "./middleware/errors.js";
 import { connectWithMongoDB } from "./config/mongo.js";
 import fileUpload from "express-fileupload";
 import cors from "cors";
+import helmet from "helmet";
+import xss from "xss-clean";
+import rateLimit from "express-rate-limit";
 dotenv.config();
 
-const PORT = process.env.PORT || 8000;
+// const PORT = process.env.PORT || 8000;
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -48,6 +51,17 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use(helmet());
+
+app.use(xss());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
+
+app.use(limiter);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
