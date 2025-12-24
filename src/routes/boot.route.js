@@ -22,7 +22,12 @@ const bootRouter = express.Router();
 bootRouter.use("/:bootcampId/courses", courseRouter);
 bootRouter.use("/:bootcampId/reviews", reviewsRouter);
 
-bootRouter.get("/", authenticationMiddleware, result(Bootcamp, "courses", "reviews"), getAllBootCamps);
+bootRouter.get(
+  "/",
+  authenticationMiddleware,
+  result(Bootcamp, "courses", "reviews"),
+  getAllBootCamps
+);
 
 bootRouter.get(
   "/dashboard",
