@@ -55,6 +55,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   helmet({
     contentSecurityPolicy: {
+      useDefaults: false,
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: [
