@@ -70,7 +70,8 @@ app.use(
           "cdnjs.cloudflare.com",
           "fonts.googleapis.com",
         ],
-        imgSrc: ["'self'", "data:", "res.cloudinary.com", "favicon.io", "ico", "*"],
+        fontSrc: ["'self'", "cdnjs.cloudflare.com", "fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:", "res.cloudinary.com", "favicon.io", "*"],
       },
     },
   })

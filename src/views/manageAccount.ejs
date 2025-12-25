@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevCamper | Manage Account</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-  </head>
+  <% include ./partials/header.ejs %>
   <body
     class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen"
   >
@@ -18,8 +9,16 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex-shrink-0 flex items-center">
-            <a href="/" class="text-xl font-bold text-indigo-600"
-              >Dev<span class="text-gray-800">Camper</span></a
+            <a
+              href="/"
+              class="text-xl font-bold text-indigo-600 flex items-center"
+            >
+              <img
+                src="/images/favicon.png"
+                alt="DevCamper Logo"
+                class="h-8 w-8 mr-2"
+              />
+              Dev<span class="text-gray-800">Camper</span></a
             >
           </div>
           <div class="flex items-center space-x-4">
