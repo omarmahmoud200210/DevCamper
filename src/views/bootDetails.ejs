@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <% include ./partials/header.ejs %>
+  <% include('partials/header') %>
   <body
     class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen"
   >
@@ -125,12 +125,9 @@
           <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <!-- Photo -->
             <div class="h-64 w-full relative">
-              <% 
-                let photoURL = bootcamp.photo;
-                if (!photoURL.startsWith("http") || !photoURL.startsWith("https")) {
-                  photoURL = "/uploads/" + photoURL;
-                }
-              %>
+              <% let photoURL = bootcamp.photo; if (!photoURL.startsWith("http")
+              || !photoURL.startsWith("https")) { photoURL = "/uploads/" +
+              photoURL; } %>
               <img
                 src="<%= photoURL %>"
                 alt="Devworks Bootcamp"
@@ -140,7 +137,8 @@
                 <span
                   class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-sm"
                 >
-                  <%= bootcamp.averageRating ? bootcamp.averageRating : 0 %> / 10
+                  <%= bootcamp.averageRating ? bootcamp.averageRating : 0 %> /
+                  10
                 </span>
               </div>
             </div>
@@ -149,7 +147,10 @@
               <!-- Rating Visual -->
               <div class="flex items-center justify-center mb-6">
                 <div class="text-center">
-                  <div class="text-5xl font-bold text-gray-900 mb-1"><%= bootcamp.averageRating ? bootcamp.averageRating : 0 %> / 10</div>
+                  <div class="text-5xl font-bold text-gray-900 mb-1">
+                    <%= bootcamp.averageRating ? bootcamp.averageRating : 0 %> /
+                    10
+                  </div>
                   <div class="flex text-yellow-400 justify-center mb-2">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
