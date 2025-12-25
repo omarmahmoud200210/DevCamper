@@ -52,7 +52,28 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
-// app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "cdn.tailwindcss.com",
+          "cdnjs.cloudflare.com",
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "cdnjs.cloudflare.com",
+          "fonts.googleapis.com",
+        ],
+        imgSrc: ["'self'", "data:", "res.cloudinary.com", "favicon.io", "*"],
+      },
+    },
+  })
+);
 
 app.use(xss());
 
