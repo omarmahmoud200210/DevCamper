@@ -11,7 +11,7 @@
             >
           </div>
           <div class="flex items-center space-x-4 md:ml-6">
-            <% if (!user.username) { %>
+            <% if (!user?.username) { %>
               <p class="text-indigo-800 text-sm font-bold">Welcome, Guest</p>
               <a
               href="/api/v1/login"
